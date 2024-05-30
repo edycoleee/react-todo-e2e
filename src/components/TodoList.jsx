@@ -1,18 +1,11 @@
 // src/components/TodoList.jsx
 import TodoItem from './TodoItem';
-
-const TodoList = ({ todos, toggleComplete, deleteTodo, setTodoToEdit }) => {
+const TodoList = () => {
   return (
     <div>
-      {todos.map((todo) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          toggleComplete={toggleComplete}
-          deleteTodo={deleteTodo}
-          setTodoToEdit={setTodoToEdit}
-        />
-      ))}
+      <TodoItem />
+      <p />
+      <TodoItem />
     </div>
   );
 };

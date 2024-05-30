@@ -1,17 +1,13 @@
 // src/components/TodoItem.jsx
-const TodoItem = ({ todo, toggleComplete, deleteTodo, setTodoToEdit }) => {
+const TodoItem = () => {
   return (
     <div>
-      <input
-        type="checkbox"
-        checked={todo.completed}
-        onChange={() => toggleComplete(todo.id)}
-      />
-      <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-        {todo.text}
+      <input type="checkbox" />
+      <span >
+        Todo 1
       </span>
-      <button onClick={() => setTodoToEdit(todo)}>Edit</button>
-      <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+      <button >Edit</button>
+      <button >Delete</button>
     </div>
   );
 };

@@ -91,10 +91,17 @@ git push -u origin main
 ```
 
 6. Buat File TodoForm.jsx
+
 7. Buat File TodoItem.jsx
+
 8. Buat File TodoList.jsx
+
 9. Buat File api.js
+
 10. Edit File App.jsx
+
 11. Jalankan react `npm run dev` >> coba aplikasi
+
 12. Buat unit test di folter test >> todo.spect.ts
+
 13. Jalankan test E2E di `npm run test:e2e`
