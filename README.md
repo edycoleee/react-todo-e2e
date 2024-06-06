@@ -241,3 +241,118 @@ const TodoForm = ({ addTodo, editTodo, todoToEdit }) => {
     </form>
   );
 };
+
+
+template 2
+
+// src/App.jsx
+import { useState, useEffect } from 'react';
+import { getTodos, addTodo, updateTodo, deleteTodo } from './api.js';
+
+const App = () => {
+  const [todos, setTodos] = useState([]);
+  const [todoToEdit, setTodoToEdit] = useState(null);
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      const fetchedTodos = await getTodos();
+      setTodos(fetchedTodos);
+    };
+    fetchTodos();
+  }, []);
+
+  const handleAddTodo = async (todo) => {
+    await addTodo(todo);
+    const fetchedTodos = await getTodos();
+    setTodos(fetchedTodos);
+  };
+
+  const handleEditTodo = async (updatedTodo) => {
+    await updateTodo(updatedTodo);
+    const fetchedTodos = await getTodos();
+    setTodos(fetchedTodos);
+    setTodoToEdit(null);
+  };
+
+  const handleToggleComplete = async (id) => {
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    );
+    setTodos(updatedTodos);
+    const todoToUpdate = updatedTodos.find(todo => todo.id === id);
+    await updateTodo(todoToUpdate);
+  };
+
+  const handleDeleteTodo = async (id) => {
+    await deleteTodo(id);
+    const fetchedTodos = await getTodos();
+    setTodos(fetchedTodos);
+  };
+
+
+  const [text, setText] = useState('');
+
+  useEffect(() => {
+    if (todoToEdit) {
+      setText(todoToEdit.text);
+    } else {
+      setText('');
+    }
+  }, [todoToEdit]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (todoToEdit) {
+      await handleEditTodo({ ...todoToEdit, text });
+    } else {
+      await handleAddTodo({
+        id: Date.now(),
+        text,
+        completed: false,
+      });
+    }
+    setText('');
+  };
+
+
+  return (
+    <div>
+      {/* 1. TODO HEADER */}
+      <h1>Todo App</h1>
+      {/* 2. TODO FORM */}
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Add a new todo"
+          required
+        />
+        <button type="submit">Submit</button>
+      </form>
+      <div>
+        {/* 3. TODO LIST */}
+        {todos.map((todo) => (
+          <div>
+            {/* 4. TODO ITEM */}
+            <input
+              type="checkbox"
+              checked={todo.completed}
+              onChange={() => handleToggleComplete(todo.id)}
+            />
+            <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+              {todo.text}
+            </span>
+            <button onClick={() => setTodoToEdit(todo)}>Edit</button>
+            <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default App;
+
+
+
