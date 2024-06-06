@@ -10,19 +10,50 @@ const App = () => {
 
   const [text, setText] = useState('');
   const [todos, setTodos] = useState([]);
+  const [todoToEdit, setTodoToEdit] = useState(null);
 
+  //fungsi get todo dari data api ke state todos
+  const fetchTodos = async () => {
+    const todos = await getTodos();
+    setTodos(todos);
+  };
+
+  //fungsi useEffect dijalankan saat awal loading
+  useEffect(() => {
+    fetchTodos();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("SIMPAN BARU: ", text);
-    const todo = {
+    //Todo Baru yang akan di simpan
+    const newTodo = {
       id: Date.now(),
       text,
       completed: false,
     }
-    setTodos([...todos, todo] )
+    //fungsi simpan todo ke api
+    await addTodo(newTodo);
+    // Refresh todos after adding a new one
+    fetchTodos();
     console.log("DATA TODOS : ", todos);
     setText('');
+  };
+
+  const handleDelete = async (id) => {
+    // Fungsi delete ke api
+    await deleteTodo(id);
+    // Refresh todos after deleting one
+    fetchTodos();
+  };
+
+
+  const handleEditTodo = async (updatedTodo) => {
+    // update todo
+    console.log("UPDATE TODO : ", updatedTodo);
+    //Refreh get todo >> tampilkan hsil update
+    //kembalikan state edit ke null
+    setTodoToEdit(null);
   };
 
   return (
@@ -50,8 +81,8 @@ const App = () => {
             <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
               {todo.text}
             </span>
-            <button >Edit</button>
-            <button >Delete</button>
+            <button onClick={() => setTodoToEdit(todo)}>Edit</button>
+            <button onClick={() => handleDelete(todo.id)}>Delete</button>
           </div>
         ))}
       </div>
