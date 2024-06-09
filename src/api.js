@@ -24,7 +24,7 @@ export const addTodo = (todo) => {
   });
 };
 
-
+//4. fungsi simulasi update todo
 export const updateTodo = (updatedTodo) => {
   console.log("UPDATE TODO");
   return new Promise((resolve) => {
